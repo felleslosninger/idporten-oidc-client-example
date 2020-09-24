@@ -1,11 +1,5 @@
-/target/*
-/target*
-/.idea/*
-/.idea
-/.idea/idporten-oidc-client-example.iml
-/.idea/misc.xml
-/.idea/modules.xml
-/.idea/vcs.xml
+target/
+.idea/
 *.iml
 /src/main/resources/application-dev.yml
 /src/main/react/build
