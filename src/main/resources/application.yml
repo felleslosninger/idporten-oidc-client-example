@@ -1,0 +1,63 @@
+# ===================================================================
+# Standard Spring Boot properties
+# ===================================================================
+
+logging:
+  level:
+    root: INFO
+    no.digdir: DEBUG
+    sun.rmi: WARN
+    jdk.event: WARN
+
+server:
+  port: 8443
+  http2:
+    enabled: true
+  servlet:
+    session:
+      cookie:
+        secure: false
+        http-only: true
+    encoding:
+      force: true
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+    min-response-size: 1024
+  ssl:
+    enabled: true
+    key-store: classpath:keystore.p12
+    key-store-password: changeit
+    key-password: changeit
+    key-store-type: PKCS12
+spring:
+  mvc:
+    throw-exception-if-no-handler-found: true
+
+  # Spring Security - OAuth 2 provider
+  security:
+    oauth2:
+      client:
+        provider:
+          idporten:
+            issuer-uri: INSERT_URL_TO_OIDC_PROVIDER_HERE
+            user-name-attribute: pid
+        registration:
+          idporten:
+            client-id: INSERT_CLIENT_ID_HERE
+            client-secret: INSERT_CLIENT_SECRET_HERE
+            authorization-grant-type: authorization_code  # if refresh tokens are used, then 'refresh_token' grant is also needed in client configuration
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope: openid, profile, idporten:user.log.all.read
+            provider: idporten
+            client-authentication-method: post
+
+# ===================================================================
+# Application specific properties
+# ===================================================================
+digdir:
+  eventlog-api: INSERT_URL_TO_USERLOG_API_HERE
+  #PROD	https://api.idporten.difi.no/innlogginger/logg/idporten
+  #VER1	https://api.idporten-ver1.difi.no/innlogginger/logg/idporten
+  #VER2	https://api.idporten-ver2.difi.no/innlogginger/logg/idporten
+  #YT2	https://api.idporten-yt2.difi.eon.no/innlogginger/logg/idporten

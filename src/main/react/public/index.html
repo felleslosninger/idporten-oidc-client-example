@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <!-- preload scripts and fonts -->
+    <% for (let index in htmlWebpackPlugin.files.js) { %>
+    <%   if(!htmlWebpackPlugin.files.js[index].includes('runtime')) { %>
+    <link rel="preload" href="<%= htmlWebpackPlugin.files.js[index] %>" as="script">
+    <%   } %>
+    <% } %>
+
+    <link rel="preload" as="font" href="%PUBLIC_URL%/fonts/sofiapro-bold-webfont.woff2" type="font/woff2" crossorigin="anonymous">
+    <link rel="preload" as="font" href="%PUBLIC_URL%/fonts/sofiapro-regular-webfont.woff2" type="font/woff2" crossorigin="anonymous">
+
+    <style>
+      @font-face {
+        font-family: 'Sofia-Pro-Regular';
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+        src: url('%PUBLIC_URL%/fonts/sofiapro-regular-webfont.woff2') format('woff2');
+      }
+
+      @font-face {
+        font-family: 'Sofia-Pro-Bold';
+        font-weight: 700;
+        font-style: normal;
+        font-display: swap;
+        src: url('%PUBLIC_URL%/fonts/sofiapro-bold-webfont.woff2') format('woff2');
+      }
+    </style>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="description" content="ID-porten OIDC client example"/>
+    <meta name="theme-color" content="#000000" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/eid-logo.gif"/>
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <title>ID-porten OIDC client example</title>
+
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+  </body>
+</html>

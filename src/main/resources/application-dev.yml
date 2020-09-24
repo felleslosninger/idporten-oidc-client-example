@@ -1,0 +1,21 @@
+
+spring:
+  security:
+    oauth2:
+      client:
+        provider:
+          idporten:
+            issuer-uri: https://eid-systest-web01.dmz.local/idporten-oidc-provider/
+#            user-name-attribute: pid
+        registration:
+          idporten:
+            client-id: idporten_oidc_client_example
+            client-secret: 501d2149-961a-4a73-942e-5b15d1c58950
+#            authorization-grant-type: authorization_code
+#            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+#            scope: openid, profile, idporten:user.log.all.read
+#            provider: idporten
+#            client-authentication-method: post
+
+digdir:
+  userlog-api: https://eid-systest-web01.dmz.local/eventlog-api/logg/idporten/all
