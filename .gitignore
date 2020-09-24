@@ -1,6 +1,7 @@
-target/*
-target*
-.idea/*
-.idea*
+/target/*
+/target*
+/.idea/*
+/.idea
 *.iml
 /src/main/resources/application-dev.yml
+/src/main/react/build
