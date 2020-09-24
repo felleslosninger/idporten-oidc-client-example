@@ -56,8 +56,8 @@ spring:
 # Application specific properties
 # ===================================================================
 digdir:
-  eventlog-api: INSERT_URL_TO_USERLOG_API_HERE
-  #PROD	https://api.idporten.difi.no/innlogginger/logg/idporten
-  #VER1	https://api.idporten-ver1.difi.no/innlogginger/logg/idporten
-  #VER2	https://api.idporten-ver2.difi.no/innlogginger/logg/idporten
-  #YT2	https://api.idporten-yt2.difi.eon.no/innlogginger/logg/idporten
+  userlog-api: INSERT_URL_TO_USERLOG_API_HERE
+  #PROD	https://api.idporten.difi.no/innlogginger/logg/idporten/all
+  #VER1	https://api.idporten-ver1.difi.no/innlogginger/logg/idporten/all
+  #VER2	https://api.idporten-ver2.difi.no/innlogginger/logg/idporten/all
+  #YT2	https://api.idporten-yt2.difi.eon.no/innlogginger/logg/idporten/all

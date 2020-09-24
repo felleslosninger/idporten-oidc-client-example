@@ -17,7 +17,7 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
-import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -64,7 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests().antMatchers("/api/**").authenticated()
             .and()
                 .oauth2Login()
-                .successHandler(devAuthenticationSuccessHandler != null ? devAuthenticationSuccessHandler : new SavedRequestAwareAuthenticationSuccessHandler() ) // only enabled in 'dev'-profile
+                .successHandler(devAuthenticationSuccessHandler != null ? devAuthenticationSuccessHandler : new SimpleUrlAuthenticationSuccessHandler("/") ) // only enabled in 'dev'-profile
         ;
 
     }
