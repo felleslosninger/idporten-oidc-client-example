@@ -1,5 +1,4 @@
 target/
 .idea/
 *.iml
-/src/main/resources/application-dev.yml
-/src/main/react/build
+src/main/react/build
