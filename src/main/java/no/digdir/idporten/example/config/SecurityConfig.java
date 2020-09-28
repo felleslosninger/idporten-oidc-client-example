@@ -1,6 +1,6 @@
-package no.digdir.oidcclientexample.config;
+package no.digdir.idporten.example.config;
 
-import no.digdir.oidcclientexample.config.dev.DeveloperAuthenticationSuccessHandler;
+import no.digdir.idporten.example.config.dev.DeveloperAuthenticationSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -18,6 +18,7 @@ import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizedCli
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -48,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
             .and()
                 .logout()
-                .logoutSuccessHandler(new OidcClientInitiatedLogoutSuccessHandler(clientRegistrationRepository))
+                .logoutSuccessHandler(this.oidcLogoutSuccessHandler())
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET")) // needed to allow GET if CSRF is configured
             .and()
                 .exceptionHandling()
@@ -69,6 +70,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
+
+    private LogoutSuccessHandler oidcLogoutSuccessHandler() {
+        OidcClientInitiatedLogoutSuccessHandler oidcLogoutSuccessHandler = new OidcClientInitiatedLogoutSuccessHandler(this.clientRegistrationRepository);
+        oidcLogoutSuccessHandler.setPostLogoutRedirectUri("{baseUrl}/"); // for now, post logout uri is just the front page
+        return oidcLogoutSuccessHandler;
+    }
 
     @Bean
     public OAuth2AuthorizedClientManager authorizedClientManager(

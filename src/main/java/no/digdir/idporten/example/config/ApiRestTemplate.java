@@ -1,6 +1,6 @@
-package no.digdir.oidcclientexample.config;
+package no.digdir.idporten.example.config;
 
-import no.digdir.oidcclientexample.config.dev.DeveloperLoggingRequestInterceptor;
+import no.digdir.idporten.example.config.dev.DeveloperLoggingRequestInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;

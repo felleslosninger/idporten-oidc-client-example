@@ -1,4 +1,4 @@
-package no.digdir.oidcclientexample.config;
+package no.digdir.idporten.example.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpRequest;

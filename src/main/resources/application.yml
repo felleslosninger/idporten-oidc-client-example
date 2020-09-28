@@ -12,7 +12,7 @@ logging:
 server:
   port: 8443
   http2:
-    enabled: true
+    enabled: true # enabled if jdk >= 9
   servlet:
     session:
       cookie:
@@ -46,7 +46,7 @@ spring:
           idporten:
             client-id: INSERT_CLIENT_ID_HERE
             client-secret: INSERT_CLIENT_SECRET_HERE
-            authorization-grant-type: authorization_code  # if refresh tokens are used, then 'refresh_token' grant is also needed in client configuration
+            authorization-grant-type: authorization_code
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             scope: openid, profile, idporten:user.log.all.read
             provider: idporten

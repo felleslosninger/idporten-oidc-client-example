@@ -1,4 +1,4 @@
-package no.digdir.oidcclientexample.config.dev;
+package no.digdir.idporten.example.config.dev;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,10 +30,10 @@ public class DeveloperLoggingRequestInterceptor implements ClientHttpRequestInte
 
     private void printRequest(HttpRequest request, byte[] body) throws IOException {
         log.debug("*** request BEGIN ***");
-        log.debug("URI         : {}", request.getURI());
-        log.debug("Method      : {}", request.getMethod());
-        log.debug("Headers     : {}", request.getHeaders() );
-        log.debug("Request body: {}", new String(body, StandardCharsets.UTF_8));
+        log.debug("*** URI         : {}", request.getURI());
+        log.debug("*** Method      : {}", request.getMethod());
+        log.debug("*** Headers     : {}", request.getHeaders() );
+        log.debug("*** Request body: {}", new String(body, StandardCharsets.UTF_8));
         log.debug("*** request END ***");
     }
 
@@ -51,10 +51,10 @@ public class DeveloperLoggingRequestInterceptor implements ClientHttpRequestInte
             // do nothing
         }
         log.debug("*** response BEGIN ***");
-        log.debug("Status code  : {}", response.getStatusCode());
-        log.debug("Status text  : {}", response.getStatusText());
-        log.debug("Headers      : {}", response.getHeaders());
-        log.debug("Response body: {}", inputStringBuilder.toString());
+        log.debug("*** Status code  : {}", response.getStatusCode());
+        log.debug("*** Status text  : {}", response.getStatusText());
+        log.debug("*** Headers      : {}", response.getHeaders());
+        log.debug("*** Response body: {}", inputStringBuilder.toString());
         log.debug("*** response END ***");
     }
 

@@ -1,4 +1,4 @@
-package no.digdir.oidcclientexample.integration;
+package no.digdir.idporten.example.integration;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,7 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Service
 @RequiredArgsConstructor
-public class IdportenClient {
+public class IdportenUserLogClient {
 
     @Value("${digdir.userlog-api}")
     private String userlogApi;

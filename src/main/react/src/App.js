@@ -54,7 +54,7 @@ class App extends Component {
 
 
     checkAuthenticated() {
-        fetch(SERVER_URL + "/api/check", {mode: 'cors', credentials: 'include', headers: {'Content-Type': 'application/json'}})
+        fetch(SERVER_URL + "/api/authcheck", {mode: 'cors', credentials: 'include', headers: {'Content-Type': 'application/json'}})
             .then(response => {
                 this.setState({isLoggedIn: !!response.ok});
             })

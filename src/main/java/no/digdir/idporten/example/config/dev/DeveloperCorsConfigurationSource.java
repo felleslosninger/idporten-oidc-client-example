@@ -1,4 +1,4 @@
-package no.digdir.oidcclientexample.config.dev;
+package no.digdir.idporten.example.config.dev;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;

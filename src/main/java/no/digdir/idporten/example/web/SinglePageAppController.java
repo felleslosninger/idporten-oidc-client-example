@@ -1,4 +1,4 @@
-package no.digdir.oidcclientexample.web;
+package no.digdir.idporten.example.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
