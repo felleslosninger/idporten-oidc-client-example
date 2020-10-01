@@ -1,5 +1,7 @@
 # idporten-oidc-client-example
-Minimalt eksempel med react frontend og backend-for-frontend for OIDC ID-porten for kunder. Full dokumentasjon finner du her: https://difi.github.io/felleslosninger/oidc_index.html
+Minimalt eksempel med react frontend og backend-for-frontend for OIDC ID-porten for kunder. Dette eksempelprosjektet viser innlogging via ID-porten, og bruk av tredjeparts-api beskyttet av ID-porten. API:et lister opp innlogget bruker sin innloggingshistorikk (https://difi.github.io/felleslosninger/oidc_api_logghistorikk.html) 
+
+Full dokumentasjon finner du her: https://difi.github.io/felleslosninger/oidc_index.html
 
 ### Noen punkter å tenke på:
   * Ingen feilhåndtering - trenger å oversette exceptions fra spring security/oidc-provider/idporten-api til json response (f.eks. https://github.com/zalando/problem-spring-web)
