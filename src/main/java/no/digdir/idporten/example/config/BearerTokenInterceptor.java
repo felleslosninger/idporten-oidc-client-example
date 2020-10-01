@@ -2,6 +2,7 @@ package no.digdir.idporten.example.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
@@ -12,6 +13,7 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.AbstractOAuth2Token;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -35,22 +37,33 @@ public class BearerTokenInterceptor implements ClientHttpRequestInterceptor {
             String clientRegistrationId = oauthToken.getAuthorizedClientRegistrationId();
             OAuth2AuthorizedClient client = clientService.loadAuthorizedClient(clientRegistrationId, oauthToken.getName());
 
-            if (hasTokenExpired(client.getAccessToken())) { // token expired - attempt to re-authorize with refresh_token
-                OAuth2AuthorizeRequest authzRequest = OAuth2AuthorizeRequest.withClientRegistrationId(clientRegistrationId).principal(oauthToken).build();
-                OAuth2AuthorizedClient reauthorizedClient = clientManager.authorize(authzRequest);
-                if(reauthorizedClient != null) {
-                    clientService.saveAuthorizedClient(reauthorizedClient, oauthToken);
-                    client = reauthorizedClient;
-                }
+            if (hasTokenExpired(client.getAccessToken())) { // access_token expired - re-authorize to get a fresh access_token
+                client = this.reauthorize(oauthToken);
+            }
+            request.getHeaders().set("Authorization", "Bearer " + client.getAccessToken().getTokenValue());
+            ClientHttpResponse response = execution.execute(request, bytes);
+
+            if (HttpStatus.UNAUTHORIZED.equals(response.getStatusCode())) { // token might have been revoked, so let's re-authorize and try again
+                client = this.reauthorize(oauthToken);
+                request.getHeaders().set("Authorization", "Bearer " + client.getAccessToken().getTokenValue());
+                response = execution.execute(request, bytes);
             }
 
-            String accessToken = client.getAccessToken().getTokenValue();
-            request.getHeaders().set("Authorization", "Bearer " + accessToken);
+            return response;
+        } else {
+            return execution.execute(request, bytes);
         }
-
-        return execution.execute(request, bytes);
     }
 
+    private OAuth2AuthorizedClient reauthorize(OAuth2AuthenticationToken oauthToken) {
+        String clientRegistrationId = oauthToken.getAuthorizedClientRegistrationId();
+        OAuth2AuthorizeRequest authzRequest = OAuth2AuthorizeRequest.withClientRegistrationId(clientRegistrationId).principal(oauthToken).build();
+        OAuth2AuthorizedClient reauthorizedClient = clientManager.authorize(authzRequest); // re-authorize with refresh_token
+        if(reauthorizedClient != null) {
+            clientService.saveAuthorizedClient(reauthorizedClient, oauthToken);
+        }
+        return reauthorizedClient;
+    }
 
     private Duration clockSkew = Duration.ofSeconds(10);
     private Clock clock = Clock.systemUTC();
