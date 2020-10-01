@@ -31,7 +31,7 @@ Dokumentasjon finnes på https://difi.github.io/felleslosninger/oidc_func_client
     "scopes": [
         "openid",
         "profile",
-        "idporten:user.log.all.read"
+        "idporten:user.log.read"
     ],
     "redirect_uris": [
         "http://localhost:8080/login/oauth2/code/idporten",

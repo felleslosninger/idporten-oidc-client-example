@@ -3,7 +3,7 @@ import './App.css';
 import './spinner.css';
 
 // server api url
-export const SERVER_URL = ((process.env.NODE_ENV === 'development') ? "https://localhost:8843" : "") + process.env.PUBLIC_URL;
+export const SERVER_URL = ((process.env.NODE_ENV === 'development') ? "https://localhost:8443" : "") + process.env.PUBLIC_URL;
 
 function Header(props) {
     return (
