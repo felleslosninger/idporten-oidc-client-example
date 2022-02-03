@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizeRequest;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.time.Clock;
 import java.time.Duration;
+import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
@@ -26,13 +28,13 @@ public class BearerTokenInterceptor implements ClientHttpRequestInterceptor {
     private final OAuth2AuthorizedClientService clientService;
     private final OAuth2AuthorizedClientManager clientManager;
 
-
     @Override
     public ClientHttpResponse intercept(HttpRequest request, byte[] bytes, ClientHttpRequestExecution execution) throws IOException {
 
-        OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if(clientService != null && oauthToken != null) {
+        if(clientService != null  && authentication instanceof OAuth2AuthenticationToken) {
+            OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
             String clientRegistrationId = oauthToken.getAuthorizedClientRegistrationId();
             OAuth2AuthorizedClient client = clientService.loadAuthorizedClient(clientRegistrationId, oauthToken.getName());
 
@@ -42,7 +44,7 @@ public class BearerTokenInterceptor implements ClientHttpRequestInterceptor {
             request.getHeaders().set("Authorization", "Bearer " + client.getAccessToken().getTokenValue());
             ClientHttpResponse response = execution.execute(request, bytes);
 
-            if (HttpStatus.UNAUTHORIZED.equals(response.getStatusCode())) { // token might have been revoked, so let's re-authorize and try again
+            if (HttpStatus.UNAUTHORIZED.equals(response.getStatusCode())) { // token might have been revoked - re-authorize and try again
                 client = this.reauthorize(oauthToken);
                 request.getHeaders().set("Authorization", "Bearer " + client.getAccessToken().getTokenValue());
                 response = execution.execute(request, bytes);
@@ -64,10 +66,10 @@ public class BearerTokenInterceptor implements ClientHttpRequestInterceptor {
         return reauthorizedClient;
     }
 
-    private Duration clockSkew = Duration.ofSeconds(10);
-    private Clock clock = Clock.systemUTC();
+    private final Duration clockSkew = Duration.ofSeconds(10);
+    private final Clock clock = Clock.systemUTC();
     private boolean hasTokenExpired(AbstractOAuth2Token token) {
-        return this.clock.instant().isAfter(token.getExpiresAt().minus(this.clockSkew));
+        return this.clock.instant().isAfter(Objects.requireNonNull(token.getExpiresAt()).minus(this.clockSkew));
     }
 
 }

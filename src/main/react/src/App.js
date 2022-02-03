@@ -2,9 +2,6 @@ import React, {Component} from 'react';
 import './App.css';
 import './spinner.css';
 
-// server api url
-export const SERVER_URL = ((process.env.NODE_ENV === 'development') ? "https://localhost:8443" : "") + process.env.PUBLIC_URL;
-
 function Header(props) {
     return (
         <header className="App-header">
@@ -14,8 +11,8 @@ function Header(props) {
             </div>
             <div className="App-title">ID-porten OIDC client example</div>
             <div className="App-buttons">
-                <button className="App-button" disabled={props.isLoggedIn} onClick={() => {window.location = SERVER_URL + "/oauth2/authorization/idporten"}}>Login</button>
-                <button className="App-button" disabled={!props.isLoggedIn} onClick={() => {window.location = SERVER_URL + "/logout"}}>Logout</button>
+                <button className="App-button" disabled={props.isLoggedIn} onClick={() => {window.location = "/oauth2/authorization/idporten"}}>Login</button>
+                <button className="App-button" disabled={!props.isLoggedIn} onClick={() => {window.location = "/logout"}}>Logout</button>
             </div>
         </header>
     );
@@ -54,16 +51,16 @@ class App extends Component {
 
 
     checkAuthenticated() {
-        fetch(SERVER_URL + "/api/authcheck", {mode: 'cors', credentials: 'include', headers: {'Content-Type': 'application/json'}})
+        fetch("/api/authcheck", {mode: 'cors', credentials: 'include', headers: {'Content-Type': 'application/json'}})
             .then(response => {
                 this.setState({isLoggedIn: !!response.ok});
             })
             .catch(err => {/* do nothing... */});
     }
 
-    fetchList() { // https://difi.github.io/felleslosninger/oidc_api_logghistorikk.html
+    fetchList() {
         this.setState({loading: true, data: []});
-        fetch(SERVER_URL + "/api/userlog", {mode: 'cors', credentials: 'include', headers: {'Content-Type': 'application/json'}})
+        fetch("/api/userlog", {mode: 'cors', credentials: 'include', headers: {'Content-Type': 'application/json'}})
             .then(response => {
                 if(response.ok) {
                     response.json().then(data => this.setState({data}));
@@ -78,7 +75,7 @@ class App extends Component {
             <div className="App-container">
                 <main>
                     <Header isLoggedIn={this.state.isLoggedIn} isLoading={this.state.loading} />
-                    <button className="App-button" disabled={this.state.loadin || !this.state.isLoggedIn} onClick={this.fetchList.bind(this)}>Fetch userlog</button>
+                    <button className="App-button" disabled={this.state.loading || !this.state.isLoggedIn} onClick={this.fetchList.bind(this)}>Fetch userlog</button>
                     {this.state.loading && <Spinner />}
                     <div className="App-logentry-container">
                     {this.state.data.map((item, index) => <LogEntry key={index} entry={item} />)}

@@ -1,27 +1,19 @@
 # idporten-oidc-client-example
-Minimalt eksempel med react frontend og backend-for-frontend for OIDC ID-porten for kunder. Dette eksempelprosjektet viser innlogging via ID-porten, og bruk av tredjeparts-api beskyttet av ID-porten. API:et lister opp innlogget bruker sin innloggingshistorikk (https://difi.github.io/felleslosninger/oidc_api_logghistorikk.html) 
+Minimalt eksempel med react frontend og backend-for-frontend for OIDC ID-porten for kunder. Dette eksempelprosjektet viser innlogging via ID-porten, og bruk av tredjeparts-api beskyttet av ID-porten. API:et lister opp innlogget bruker sin innloggingshistorikk (https://docs.digdir.no/docs/idporten/oidc/oidc_api_logghistorikk) 
 
-Full dokumentasjon finner du her: https://difi.github.io/felleslosninger/oidc_index.html
+Full dokumentasjon finner du her: https://docs.digdir.no/docs/idporten/idporten/idporten_overordnet
 
 ### Noen punkter å tenke på:
-  * Ingen feilhåndtering - trenger å oversette exceptions fra spring security/oidc-provider/idporten-api til json response (f.eks. https://github.com/zalando/problem-spring-web)
-  * Applikasjonen sin sesjon er helt uavhengig idporten sin sesjon.
+  * Applikasjonen sin sesjon er helt uavhengig ID-porten sin sesjon. 
+  * Ingen feilhåndtering er konfigurert i eksempelprosjektet
 
 ### Test drive
  * Legg inn api-url, client-id, client-secret og oidc provider url i src/main/resources/application.yml
- * mvn clean install -DskipTests=true && mvn spring-boot:run
+ * mvn clean package spring-boot:run
  * App tilgjengelig på https://localhost:8443/
-  
-### Lokal utvikling
- * Legg inn api-url, client-id, client-secret og oidc provider url i src/main/resources/application-dev.yml
- * mvn clean install -DskipTests=true && mvn spring-boot:run -Dspring-boot.run.profiles=dev
- * cd src/main/react && yarn install && yarn start
- * App (via nodejs) tilgjengelig  på http://localhost:3000
- * Api tilgjengelig på https://localhost:8443/api
- 
 
 ## Klientkonfigurasjon 
-Dokumentasjon finnes på https://difi.github.io/felleslosninger/oidc_func_clientreg.html og selvbetjeningsløsning finnes på https://selvbetjening-samarbeid.difi.no/
+Dokumentasjon finnes på https://docs.digdir.no/docs/idporten/oidc/oidc_func_clientreg, og selvbetjeningsløsning finnes på https://selvbetjening-samarbeid.difi.no/
 
 ### Eksempel på klientkonfigurasjon:
 ```
@@ -34,16 +26,14 @@ Dokumentasjon finnes på https://difi.github.io/felleslosninger/oidc_func_client
         "idporten:user.log.read"
     ],
     "redirect_uris": [
-        "http://localhost:8080/login/oauth2/code/idporten",
-        "https://localhost:8443/login/oauth2/code/idporten"
+        "https://localhost:8443/login/oauth2/code/idporten"        
     ],
     "post_logout_redirect_uris": [
-        "https://localhost:8443/",
-        "https://localhost:8080/"
+        "https://localhost:8443/"
     ],
     "authorization_lifetime": 3600,
     "access_token_lifetime": 60,
-    "refresh_token_lifetime": 600,
+    "refresh_token_lifetime": 3600,
     "refresh_token_usage": "ONETIME",
     "frontchannel_logout_session_required": false,
     "token_endpoint_auth_method": "client_secret_post",
