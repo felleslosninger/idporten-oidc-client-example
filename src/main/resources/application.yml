@@ -42,7 +42,7 @@ spring:
       client:
         provider:
           idporten:
-            issuer-uri: https://oidc-test1.difi.eon.no/idporten-oidc-provider/ # OIDC PROVIDER GOES HERE
+            issuer-uri: https://oidc-ver2.difi.no/idporten-oidc-provider/ # OIDC PROVIDER GOES HERE
             user-name-attribute: pid
         registration:
           idporten:
@@ -58,8 +58,4 @@ spring:
 # Application specific properties
 # ===================================================================
 digdir:
-  userlog-api: https://api.idporten-test1.difi.eon.no/innlogginger/logg/idporten # API URI GOES HERE
-  #PROD	https://api.idporten.difi.no/innlogginger/logg/idporten
-  #VER1	https://api.idporten-ver1.difi.no/innlogginger/logg/idporten
-  #VER2	https://api.idporten-ver2.difi.no/innlogginger/logg/idporten
-  #YT2	https://api.idporten-yt2.difi.eon.no/innlogginger/logg/idporten
+  userlog-api: https://api.idporten-ver2.difi.no/innlogginger/logg/idporten # API URI GOES HERE
