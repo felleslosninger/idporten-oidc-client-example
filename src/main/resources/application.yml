@@ -1,0 +1,61 @@
+# ===================================================================
+# Standard Spring Boot properties
+# ===================================================================
+
+logging:
+  level:
+    root: INFO
+    no.digdir: DEBUG
+    sun.rmi: WARN
+    jdk.event: WARN
+
+server:
+  port: 8443
+  http2:
+    enabled: true # enabled if jdk >= 9
+  servlet:
+    session:
+      cookie:
+        secure: false
+        http-only: true
+    encoding:
+      force: true
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+    min-response-size: 1024
+  ssl:
+    enabled: true
+    key-store: classpath:keystore.p12
+    key-store-password: changeit
+    key-password: changeit
+    key-store-type: PKCS12
+spring:
+  mvc:
+    throw-exception-if-no-handler-found: true
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+  # Spring Security - OAuth 2 provider
+  security:
+    oauth2:
+      client:
+        provider:
+          idporten:
+            issuer-uri: https://oidc-ver2.difi.no/idporten-oidc-provider/ # OIDC PROVIDER GOES HERE
+            user-name-attribute: pid
+        registration:
+          idporten:
+            client-id: idporten_oidc_client_example # OIDC CLIENT ID GOES HERE
+            client-secret: 00000000-0000-0000-0000-000000000000 # OIDC CLIENT SECRET GOES HERE
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope: openid, profile, idporten:user.log.read
+            provider: idporten
+            client-authentication-method: post
+
+# ===================================================================
+# Application specific properties
+# ===================================================================
+digdir:
+  userlog-api: https://api.idporten-ver2.difi.no/innlogginger/logg/idporten # API URI GOES HERE
